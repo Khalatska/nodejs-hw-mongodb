@@ -4,6 +4,7 @@ import cors from 'cors';
 import { env } from './utils/env.js';
 import { getAllContacts } from './services/contacts.js';
 import { getContactById } from './services/contacts.js';
+import mongoose from 'mongoose';
 
 const app = express();
 
@@ -20,12 +21,6 @@ export const setupServer = () => {
 
   app.use(cors());
 
-  //   app.get('/', (req, res) => {
-  //     res.json({
-  //       message: 'Hello world!',
-  //     });
-  //   });
-
   app.get('/contacts', async (req, res) => {
     const contacts = await getAllContacts();
     res.json({
@@ -37,6 +32,12 @@ export const setupServer = () => {
 
   app.get('/contacts/:contactId', async (req, res) => {
     const id = req.params.contactId;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({
+        status: 400,
+        message: `${id} is not valid`,
+      });
+    }
     const contact = await getContactById(id);
     if (!contact) {
       return res.status(404).json({
@@ -44,6 +45,7 @@ export const setupServer = () => {
         message: `Student with id ${id} not found!`,
       });
     }
+
     res.json({
       status: 200,
       message: `Successfully found contacts!`,
