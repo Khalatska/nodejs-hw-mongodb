@@ -3,6 +3,7 @@ import {
   getContactById,
   createContact,
   updateContact,
+  deleteContact,
 } from '../services/contacts.js';
 import mongoose from 'mongoose';
 import createHttpError from 'http-errors';
@@ -59,4 +60,15 @@ export const patchContactController = async (req, res) => {
     message: `Successfully patched a contacts!`,
     data: result,
   });
+};
+
+export const deleteContactController = async (req, res) => {
+  const { contactId } = req.params;
+  const contact = await deleteContact(contactId);
+
+  if (!contact) {
+    throw createHttpError(404, 'Contact not found');
+  }
+
+  res.status(204).send();
 };
