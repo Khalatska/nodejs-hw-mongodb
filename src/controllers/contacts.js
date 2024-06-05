@@ -1,5 +1,9 @@
-import { getAllContacts } from '../services/contacts.js';
-import { getContactById } from '../services/contacts.js';
+import {
+  getAllContacts,
+  getContactById,
+  createContact,
+  updateContact,
+} from '../services/contacts.js';
 import mongoose from 'mongoose';
 import createHttpError from 'http-errors';
 
@@ -29,5 +33,30 @@ export const getContactByIdController = async (req, res) => {
     status: 200,
     message: `Successfully found contacts!`,
     data: contact,
+  });
+};
+
+export const createContactController = async (req, res) => {
+  const contact = await createContact(req.body);
+
+  res.status(201).json({
+    status: 201,
+    message: 'Successfully patched a contact!',
+    data: contact,
+  });
+};
+
+export const patchContactController = async (req, res) => {
+  const { contactId } = req.params;
+  const result = await updateContact(contactId, req.body);
+
+  if (!result) {
+    throw createHttpError(404, 'Contact not found');
+  }
+
+  res.json({
+    status: 200,
+    message: `Successfully patched a contacts!`,
+    data: result,
   });
 };

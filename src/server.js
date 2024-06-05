@@ -21,7 +21,14 @@ export const setupServer = () => {
 
   app.use(cors());
 
-  app.get(contactsRouter);
+  app.use(
+    express.json({
+      limit: '1mb',
+      type: ['application/json', 'application/vnd.api+json'],
+    }),
+  );
+
+  app.use(contactsRouter);
 
   app.use('*', notFoundHandler);
 
