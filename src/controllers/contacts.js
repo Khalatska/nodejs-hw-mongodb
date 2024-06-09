@@ -11,7 +11,6 @@ import {
 } from '../utils/parsePaginationParams.js';
 
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
-import mongoose from 'mongoose';
 import createHttpError from 'http-errors';
 
 export const getContactsController = async (req, res) => {
@@ -34,12 +33,6 @@ export const getContactsController = async (req, res) => {
 
 export const getContactByIdController = async (req, res) => {
   const id = req.params.contactId;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({
-      status: 400,
-      message: `${id} is not valid`,
-    });
-  }
   const contact = await getContactById(id);
   if (!contact) {
     throw createHttpError(404, 'Student not found');
