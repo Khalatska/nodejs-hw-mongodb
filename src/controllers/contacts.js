@@ -5,11 +5,21 @@ import {
   updateContact,
   deleteContact,
 } from '../services/contacts.js';
+import { parseSortParams } from '../utils/parsePaginationParams.js';
+
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import mongoose from 'mongoose';
 import createHttpError from 'http-errors';
 
 export const getContactsController = async (req, res) => {
-  const contacts = await getAllContacts();
+  const { page, perPage } = parsePaginationParams(req.query);
+  const { sortBy, sortOrder } = parseSortParams(req.query);
+  const contacts = await getAllContacts({
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+  });
   res.json({
     status: 200,
     message: 'Successfully found contacts!',
@@ -42,7 +52,7 @@ export const createContactController = async (req, res) => {
 
   res.status(201).json({
     status: 201,
-    message: 'Successfully patched a contact!',
+    message: 'Successfully created a contact!',
     data: contact,
   });
 };
