@@ -5,7 +5,10 @@ import {
   updateContact,
   deleteContact,
 } from '../services/contacts.js';
-import { parseSortParams } from '../utils/parsePaginationParams.js';
+import {
+  parseSortParams,
+  parseFilterParams,
+} from '../utils/parsePaginationParams.js';
 
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import mongoose from 'mongoose';
@@ -14,11 +17,13 @@ import createHttpError from 'http-errors';
 export const getContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query);
+  const filter = parseFilterParams(req.query);
   const contacts = await getAllContacts({
     page,
     perPage,
     sortBy,
     sortOrder,
+    filter,
   });
   res.json({
     status: 200,

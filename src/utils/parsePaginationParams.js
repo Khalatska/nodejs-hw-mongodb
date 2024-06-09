@@ -51,3 +51,29 @@ export const parseSortParams = (query) => {
     sortBy: parsedSortBy,
   };
 };
+
+const parseContactType = (contactType) => {
+  const isString = typeof contactType === 'string';
+  if (!isString) return;
+  const isContactType = (contactType) =>
+    ['personal', 'work', 'home'].includes(contactType);
+
+  if (isContactType(contactType)) return contactType;
+};
+const parseBoolean = (unknown) => {
+  if (!['true', 'false'].includes(unknown)) return;
+
+  return unknown === 'true' ? true : false;
+};
+
+export const parseFilterParams = (query) => {
+  const { isFavorite, contactType } = query;
+
+  const parsedContactType = parseContactType(contactType);
+  const parsedFavorite = parseBoolean(isFavorite);
+
+  return {
+    contactType: parsedContactType,
+    isFavorite: parsedFavorite,
+  };
+};
