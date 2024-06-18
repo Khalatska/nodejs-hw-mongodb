@@ -14,7 +14,7 @@ import {
 } from '../validation/contacts.js';
 import { validateMongoId } from '../middlewares/validateMongoId.js';
 import { authenticate } from '../middlewares/authenticate.js';
-import { checkConnection } from '../middlewares/checkConnection.js';
+
 
 const router = Router();
 router.use('/:contactId', validateMongoId('contactId'));
@@ -25,7 +25,7 @@ router.get('/', ctrlWrapper(getContactsController));
 
 router.get(
   '/:contactId',
-  checkConnection,
+
   ctrlWrapper(getContactByIdController),
 );
 
@@ -37,14 +37,14 @@ router.post(
 
 router.patch(
   '/:contactId',
-  checkConnection,
+
   ValidateBody(updateContactSchema),
   ctrlWrapper(patchContactController),
 );
 
 router.delete(
   '/:contactId',
-  checkConnection,
+ 
   ctrlWrapper(deleteContactController),
 );
 
