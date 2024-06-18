@@ -1,4 +1,6 @@
+import createHttpError from 'http-errors';
 import { THIRTY_DAYS } from '../constants/contacts.js';
+import { SessionsCollection } from '../db/models/session.js';
 import {
   loginUser,
   logoutUser,
@@ -59,9 +61,19 @@ export const refreshUserSessionController = async (req, res) => {
 };
 
 export const logoutUserController = async (req, res) => {
-  if (req.cookies.sessionId) {
-    await logoutUser(req.cookies.sessionId);
+  const sessionId = req.cookies.sessionId;
+
+  if (!sessionId) {
+    throw createHttpError(401, 'Session not found');
   }
+
+  const session = await SessionsCollection.findById(sessionId);
+
+  if (!session) {
+    throw createHttpError(401, 'Session not found');
+  }
+
+  await logoutUser(sessionId);
 
   res.clearCookie('sessionId');
   res.clearCookie('refreshToken');
