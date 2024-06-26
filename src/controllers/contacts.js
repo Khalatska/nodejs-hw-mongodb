@@ -57,14 +57,35 @@ export const createContactController = async (req, res) => {
   });
 };
 
+// export const patchContactController = async (req, res) => {
+//   const { body, file } = req;
+//   const { contactId } = req.params;
+//   const result = await updateContact(
+//     contactId,
+//     { ...body, file },
+//     req.user._id,
+//   );
+
+//   if (!result) {
+//     throw createHttpError(404, 'Contact not found');
+//   }
+
+//   res.json({
+//     status: 200,
+//     message: `Successfully patched a contacts!`,
+//     data: result,
+//   });
+// };
 export const patchContactController = async (req, res) => {
   const { body, file } = req;
   const { contactId } = req.params;
-  const result = await updateContact(
-    contactId,
-    { ...body, file },
-    req.user._id,
-  );
+  let updateData = { ...body };
+
+  if (file) {
+    updateData.photo = file;
+  }
+
+  const result = await updateContact(contactId, updateData, req.user._id);
 
   if (!result) {
     throw createHttpError(404, 'Contact not found');
@@ -72,7 +93,7 @@ export const patchContactController = async (req, res) => {
 
   res.json({
     status: 200,
-    message: `Successfully patched a contacts!`,
+    message: `Successfully patched a contact!`,
     data: result,
   });
 };

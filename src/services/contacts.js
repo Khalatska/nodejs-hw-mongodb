@@ -59,16 +59,40 @@ export const createContact = async ({ file, ...payload }, userId) => {
   return contact;
 };
 
+// export const updateContact = async (
+//   contactId,
+//   { photo, ...payload },
+//   userId,
+// ) => {
+//   console.log('photo', photo);
+//   const url = await saveFileToCloudinary(photo);
+//   const result = await Contact.findOneAndUpdate(
+//     { _id: contactId, userId: userId },
+//     { ...payload, photo: url },
+//     { new: true },
+//   );
+
+//   return result;
+// };
+
 export const updateContact = async (
   contactId,
   { photo, ...payload },
   userId,
 ) => {
-  console.log('photo', photo);
-  const url = await saveFileToCloudinary(photo);
+  let url;
+  if (photo) {
+    url = await saveFileToCloudinary(photo);
+  }
+
+  const updatePayload = { ...payload };
+  if (url) {
+    updatePayload.photo = url;
+  }
+
   const result = await Contact.findOneAndUpdate(
     { _id: contactId, userId: userId },
-    { ...payload, photo: url },
+    updatePayload,
     { new: true },
   );
 
