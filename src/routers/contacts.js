@@ -38,7 +38,7 @@ router.post(
 
 router.patch(
   '/:contactId',
-
+  upload.single('photo'),
   ValidateBody(updateContactSchema),
   ctrlWrapper(patchContactController),
 );

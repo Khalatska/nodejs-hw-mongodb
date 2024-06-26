@@ -64,6 +64,7 @@ export const updateContact = async (
   { photo, ...payload },
   userId,
 ) => {
+  console.log('photo', photo);
   const url = await saveFileToCloudinary(photo);
   const result = await Contact.findOneAndUpdate(
     { _id: contactId, userId: userId },
