@@ -17,7 +17,7 @@ cloudinary.v2.config({
 
 export const saveFileToCloudinary = async (file) => {
   if (!file || !file.path) {
-    throw new Error('File not found');
+    return null;
   }
   const response = await cloudinary.v2.uploader.upload(file.path);
   return response.secure_url;

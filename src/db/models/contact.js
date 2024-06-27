@@ -21,7 +21,7 @@ const contactSchema = new Schema(
       type: String,
       validate: emailValidator,
     },
-    isFavorite: {
+    isFavourite: {
       type: Boolean,
       default: false,
     },
