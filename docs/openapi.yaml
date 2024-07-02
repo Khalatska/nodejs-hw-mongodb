@@ -14,7 +14,7 @@ tags:
     description: Auth operations.
 servers:
   - url: <http://localhost:3000>
-  - url: <https://example.com/api/v1>
+  - url: <https://contacts-app-nnbo.onrender.com>
 paths:
   /contacts:
     post:
