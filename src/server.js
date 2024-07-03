@@ -6,6 +6,7 @@ import router from './routers/index.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import cookiesParser from 'cookie-parser';
+import { swaggerDocs } from './middlewares/swaggerDocs.js';
 
 const app = express();
 
@@ -19,7 +20,7 @@ export const setupServer = () => {
       },
     }),
   );
-
+  app.use('/api-docs', swaggerDocs());
   app.use(cors());
   app.use(cookiesParser());
 
